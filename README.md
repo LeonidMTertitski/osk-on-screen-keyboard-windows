@@ -7,7 +7,7 @@ Input.exe works with Windows 7 and Windows 10.
 You can create your own KeyWords_New.txt file with customized "keys".
 The folllowing screen shots show "Input" keyboards with different layout.
 
-![QWERTY Keyboard(/KeyWords_QWERTY.png?raw=true)
-![ABC Keyboard(/KeyWords_ABC.png?raw=true)
-![123 Keyboard(/KeyWords_123.png?raw=true)
-![Mix Keyboard(/KeyWords_mix.png?raw=true)
+![QWERTY Keyboard](/KeyWords_QWERTY.png?raw=true)
+![ABC Keyboard](/KeyWords_ABC.png?raw=true)
+![123 Keyboard](/KeyWords_123.png?raw=true)
+![Mix Keyboard](/KeyWords_mix.png?raw=true)
