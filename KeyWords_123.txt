@@ -1,0 +1,50 @@
+﻿// KeyWords file:
+// Unicode Text file. Can be edited with Notepad. 
+// KeyWords file defines "keywords" for on screen keyboard. Each "keyword" defines:
+//    "keys" - user can see and click. 
+//    "words" - symbol or string that will be used as input.
+// To define "keyword" use:
+// a. key|=words    - "words" can be with spaces and \n to define new line.
+// b. key|word      - "word" is a symbol or string 
+// c. key           - "key" is equal to "word"
+// Use "," to separate keywords
+// "--" defines new line in keyboard layout
+// To define "word" with special keyboard keys use:
+// {SHIFT},{CTRL},{ALT},{CAPSLOCK},{TAB},{Fn},{PRTSC},
+// or (to simulate any key on keyboard) use:
+// {VK_0xZZ} for key click, 
+// {VK_DOWN_0xZZ}, {VK_UP_0xZZ} for key down/up.
+// ZZ is hexadecimal value (keyboard equivalents for the virtual-key code). 
+// See all virtual-key codes:
+// https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+//
+// To convert selected text to upper (or lower) case use {UPPERCASE} (or {LOWERCASE}).
+// To define font use:
+//     <Font=Name [Size=N]>
+//     keyword
+//     </Font>
+//
+// To define symbol "comma" (,) or "vertical line" (|) in "key" or "word" use ',' or '|'
+//
+<Font=Consolas Size=14>
+0,1,2,3,4,-,+
+-------------------
+5,6,7,8,9,',',.
+-------------------
+<Font=MS Gothic>
+⏎|{ENTER}
+</Font>
+<Font=Segoe UI symbol>
+⌦|{DEL}
+⌫|{BACKSPACE}
+↶|{CTRL}Z
+↷|{CTRL}{SHIFT}Z
+</Font>
+←|{VK_0x25}
+→|{VK_0x27}
+</Font>
+-------------------
+Cut|{CTRL}X
+Copy|{CTRL}C
+Paste|{CTRL}V
+-------------------

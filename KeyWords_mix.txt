@@ -1,0 +1,78 @@
+﻿// KeyWords file:
+// Unicode Text file. Can be edited with Notepad. 
+// KeyWords file defines "keywords" for on screen keyboard. Each "keyword" defines:
+//    "keys" - user can see and click. 
+//    "words" - symbol or string that will be used as input.
+// To define "keyword" use:
+// a. key|=words    - "words" can be with spaces and \n to define new line.
+// b. key|word      - "word" is a symbol or string 
+// c. key           - "key" is equal to "word"
+// Use "," to separate keywords
+// "--" defines new line in keyboard layout
+// To define "word" with special keyboard keys use:
+// {SHIFT},{CTRL},{ALT},{CAPSLOCK},{TAB},{Fn},{PRTSC},
+// or (to simulate any key on keyboard) use:
+// {VK_0xZZ} for key click, 
+// {VK_DOWN_0xZZ}, {VK_UP_0xZZ} for key down/up.
+// ZZ is hexadecimal value (keyboard equivalents for the virtual-key code). 
+// See all virtual-key codes:
+// https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+//
+// To convert selected text to upper (or lower) case use {UPPERCASE} (or {LOWERCASE}).
+// To define font use:
+//     <Font=Name [Size=N]>
+//     keyword
+//     </Font>
+//
+// To define symbol "comma" (,) or "vertical line" (|) in "key" or "word" use ',' or '|'
+//
+<Font=Consolas>
+~,!,@,#,$,%,^,&,*,_,+,-,=
+-------------------
+1,2,3,4,5,6,7,8,9,0
+-------------------
+a,b,c,d,e,f,g,h,i,j,k,l,m,n
+-------------------
+o,p,q,r,s,t,u,v,w,x,y,z
+-------------------
+<Font=Segoe UI Emoji>
+😀,☹,❤,🎆,🍟,🚘,🕎,🎅
+</Font>
+-------------------
+Simplified Chinese:汉字
+-------------------
+Traditional Chinese:漢字
+-------------------
+Text1|=This is examle of long input.\nWith several lines.\n
+-------------------
+{,},[,],(,),<,>,/,\,'|'
+-------------------
+',',:,",;,',?,.
+-------------------
+Space|{SPACE}
+Enter|{ENTER}
+Bksp|{BACKSPACE}
+Del|{DEL}
+-------------------
+Tab|{TAB}
+Caps|{CAPSLOCK}
+Shift|{SHIFT}
+Ctrl|{CTRL}
+Alt|{ALT}
+------------------
+Copy|{CTRL}C
+Cut|{CTRL}X
+Paste|{CTRL}V
+Undo|{CTRL}Z
+Redo|{CTRL}{SHIFT}Z
+Find|{CTRL}F
+------------------
+cC|{UPPERCASE}
+Cc|{LOWERCASE}
+PrntScrn|{ALT}{PRTSC}|
+------------------
+F3|{F3}
+F5|{F5}
+F10|{F10}
+F11|{F11}
+------------------
