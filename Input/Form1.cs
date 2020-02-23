@@ -25,6 +25,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -34,10 +35,11 @@ namespace Input
     public partial class Form1 : Form
     {
         private const int WS_EX_NOACTIVATE = 0x08000000;
-        private const int WM_KEYDOWN = 0x0100;
+        private const int WM_KEYDOWN = 0x0100; 
         public Form1()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+            this.Location = new Point(Properties.Settings.Default.Xlocation, Properties.Settings.Default.Ylocation);
         }
         private void Form1_Activated(object sender, EventArgs e)
         {

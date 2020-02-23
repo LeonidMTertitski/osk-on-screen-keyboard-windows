@@ -28,17 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.richTextAllKeyWords = new Input.KeyWordsRichTextBox();
+            this.SuspendLayout();
+            // 
+            // richTextAllKeyWords
+            // 
+            this.richTextAllKeyWords.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextAllKeyWords.CausesValidation = false;
+            this.richTextAllKeyWords.DetectUrls = false;
+            this.richTextAllKeyWords.Font = new System.Drawing.Font("Consolas", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextAllKeyWords.Location = new System.Drawing.Point(0, 0);
+            this.richTextAllKeyWords.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
+            this.richTextAllKeyWords.Name = "richTextAllKeyWords";
+            this.richTextAllKeyWords.ReadOnly = true;
+            this.richTextAllKeyWords.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.richTextAllKeyWords.Size = new System.Drawing.Size(136, 105);
+            this.richTextAllKeyWords.TabIndex = 0;
+            this.richTextAllKeyWords.TabStop = false;
+            this.richTextAllKeyWords.Text = "";
+            this.richTextAllKeyWords.WordWrap = false;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(19F, 37F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(430, 296);
+            this.CausesValidation = false;
+            this.ClientSize = new System.Drawing.Size(136, 104);
             this.Controls.Add(this.richTextAllKeyWords);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Input";

@@ -134,9 +134,9 @@ namespace Input
         public const byte VK_SNAPSHOT = 0x2C;
         public const byte VK_DELETE = 0x2E;
         public const byte VK_F1 = 0x70;
-        public const byte VK_NUMLOCK = 0x90;
 
         public const int m_KeyDownProcessDelay = 100;
+        public const int MAX_CLIPBOARD_READ_TM = 1000;
         public KeyboardInput()
         {
             ResetAll();
@@ -146,9 +146,9 @@ namespace Input
             INPUT input = new INPUT { Type = 1 };
             input.Data.Keyboard = new KEYBDINPUT()
             {
-                Vk = unicode ? (ushort)0 : vk,
+                Vk = 0,//unicode ? (ushort)0 : vk,
                 Scan = unicode ? vk : (ushort)MapVirtualKey(vk, 0),
-                Flags = (uint)KEYEVENTF.KEYDOWN | (unicode ? (uint)KEYEVENTF.UNICODE : 0),
+                Flags = (uint)KEYEVENTF.KEYDOWN | (unicode ? (uint)KEYEVENTF.UNICODE : (uint)KEYEVENTF.SCANCODE),
                 Time = 0,
                 ExtraInfo = GetMessageExtraInfo() //IntPtr.Zero,
             };
@@ -190,9 +190,9 @@ namespace Input
             INPUT input = new INPUT { Type = 1 };
             input.Data.Keyboard = new KEYBDINPUT()
             {
-                Vk = unicode ? (ushort)0 : vk,
+                Vk = 0,//unicode ? (ushort)0 : vk,
                 Scan = unicode ? vk : (ushort)MapVirtualKey(vk, 0),
-                Flags = (uint)KEYEVENTF.KEYUP | (unicode ? (uint)KEYEVENTF.UNICODE : 0),
+                Flags = (uint)KEYEVENTF.KEYUP | (unicode ? (uint)KEYEVENTF.UNICODE : (uint)KEYEVENTF.SCANCODE),
                 Time = 0,
                 ExtraInfo = GetMessageExtraInfo(),  //IntPtr.Zero,
             };
@@ -279,6 +279,23 @@ namespace Input
                 str = str.Substring(1, str.Length - 1);
             }
         }
+        public string GetClipboard()
+        {
+            string cb = "";
+            string oldcb = Clipboard.GetText(TextDataFormat.UnicodeText);
+            SimulateKeybdKeyClick((ushort)'C'); // copy to clipboard
+            SendKeybdInput();
+            for (int i = 0; i < MAX_CLIPBOARD_READ_TM; i += m_KeyDownProcessDelay)
+            {
+                // Note: SW will stay in the loop 1000 ms (MAX_CLIPBOARD_READ_TM) 
+                //       if current clipboard text and highlighted text are the same.
+                Thread.Sleep(m_KeyDownProcessDelay); // wait for clipboard update
+                cb = Clipboard.GetText(TextDataFormat.UnicodeText);
+                if (!cb.Equals(oldcb))
+                    break;
+            }
+            return cb;
+        }
         public bool ChangeCase(string str)
         {
             if (str == null)
@@ -291,10 +308,7 @@ namespace Input
                     SimulateKeybdKeyDown(VK_CONTROL);
                     m_ctrlPressed = true;
                 }
-                SimulateKeybdKeyClick((ushort)'C'); // copy to clipboard
-                SendKeybdInput();
-                Thread.Sleep(m_KeyDownProcessDelay); // wait for clipboard update
-                cb = Clipboard.GetText(TextDataFormat.UnicodeText);
+                cb = GetClipboard();
                 cb = cb.ToLowerInvariant();
             }
             else if (str.StartsWith("{UPPERCASE}", StringComparison.InvariantCultureIgnoreCase))
@@ -304,10 +318,7 @@ namespace Input
                     SimulateKeybdKeyDown(VK_CONTROL);
                     m_ctrlPressed = true;
                 }
-                SimulateKeybdKeyClick((ushort)'C'); // copy to clipboard
-                SendKeybdInput();
-                Thread.Sleep(m_KeyDownProcessDelay); // wait for clipboard update
-                cb = Clipboard.GetText(TextDataFormat.UnicodeText);
+                cb = GetClipboard();
                 cb = cb.ToUpperInvariant();
             }
             else

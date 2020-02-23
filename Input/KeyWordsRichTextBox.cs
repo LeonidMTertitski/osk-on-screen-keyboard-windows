@@ -45,7 +45,6 @@ namespace Input
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
-
         [DllImport("user32.dll")]
         private static extern int SetForegroundWindow(IntPtr w);
 
@@ -111,6 +110,8 @@ namespace Input
             m_selectedKeyWordsName = GenerateMenuAndGetKeyWordsName(m_selectedKeyWordsName);
             m_defaultSelBg = SelectionBackColor;
             ReadOnly = false; // needed to prevent "beep" sound on "Shift" in win7
+            SelectionBackColor = m_defaultSelBg;
+            BackColor = m_defaultSelBg;
             SetCurrentCapsShiftCtrlAlt();
             LoadKeyWords();
             Thread thread = new Thread(new ThreadStart(PlayClick));
@@ -167,8 +168,10 @@ namespace Input
             if (istartInd < 0 || istartInd >= KeyWords.m_KeyWords.Length ||
                 istopInd < 0 || istopInd >= KeyWords.m_KeyWords.Length)
                 return;
-            int istart = KeyWords.m_KeyWords[istartInd].Start + 1;
-            int ilength = KeyWords.m_KeyWords[istopInd].Start + KeyWords.m_KeyWords[istopInd].Length - istart - 1;
+            int istart = istartInd > 0 ? 
+                         KeyWords.m_KeyWords[istartInd-1].Start + KeyWords.m_KeyWords[istartInd-1].Length :
+                         KeyWords.m_KeyWords[istartInd].Start;
+            int ilength = KeyWords.m_KeyWords[istopInd].Start + KeyWords.m_KeyWords[istopInd].Length - istart;
             if (ilength > 0)
             {
                 Select(istart, ilength);
