@@ -38,7 +38,7 @@ namespace Input
         private const int WM_KEYDOWN = 0x0100; 
         public Form1()
         {
-            InitializeComponent(); 
+            InitializeComponent();
             this.Location = new Point(Properties.Settings.Default.Xlocation, Properties.Settings.Default.Ylocation);
         }
         private void Form1_Activated(object sender, EventArgs e)

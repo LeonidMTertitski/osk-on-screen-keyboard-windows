@@ -36,7 +36,6 @@
             this.richTextAllKeyWords.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextAllKeyWords.CausesValidation = false;
             this.richTextAllKeyWords.DetectUrls = false;
-            this.richTextAllKeyWords.Font = new System.Drawing.Font("Consolas", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextAllKeyWords.Location = new System.Drawing.Point(0, 0);
             this.richTextAllKeyWords.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.richTextAllKeyWords.Name = "richTextAllKeyWords";

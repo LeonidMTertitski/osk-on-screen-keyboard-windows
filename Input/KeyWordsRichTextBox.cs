@@ -48,6 +48,9 @@ namespace Input
         [DllImport("user32.dll")]
         private static extern int SetForegroundWindow(IntPtr w);
 
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool SetProcessDPIAware();
+
         private Form m_Form;
         private IntPtr m_currentFocus = IntPtr.Zero;
         private MemoryStream m_ClickSoundStream;
@@ -61,7 +64,6 @@ namespace Input
         private string m_selectedKeyWordsName;
         private int m_itemMouseDown;
         private bool m_ignoreLongMouseDown;
-        private readonly Font m_richTextAllKeyWordsFont;
         private bool m_moveOnMouseButtonDown;
         private bool m_fade;
         private bool m_playClickSound;
@@ -77,9 +79,13 @@ namespace Input
         
         private const int MARGIN_WIDTH = 8;
         public int m_itemHighlightedIndex;
+        public Font m_richTextAllKeyWordsFont;
         public KeyWordsRichTextBox()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+            SetProcessDPIAware();
+            this.Font = new System.Drawing.Font("Consolas", 14F);
+            m_richTextAllKeyWordsFont = this.Font;
             this.ContentsResized += new System.Windows.Forms.ContentsResizedEventHandler(this.RichTextAllKeyWords_ContentsResized);
             m_itemHighlightedIndex = -1;
             WordWrap = false;
@@ -87,7 +93,6 @@ namespace Input
             SetStyle(ControlStyles.Selectable, false);
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             m_keybd = new KeyboardInput();
-            m_richTextAllKeyWordsFont = Font;
             m_ignoreLongMouseDown = true;
             m_playClickExit = false;
             m_playClickCount = 0;
@@ -410,8 +415,6 @@ namespace Input
                     bkColor = Color.YellowGreen;
                 else if (!bHighlight && specialKey && KeyWords.m_KeyWords[ind].Selected)
                     bkColor = Color.Yellow;
-                else if (!bHighlight && (ind == KeyWords.selectedIndex) && KeyWords.m_KeyWords[ind].Selected)
-                    bkColor = Color.White;
                 else if (!bHighlight)
                     bkColor = m_defaultSelBg;
                 else
@@ -493,7 +496,7 @@ namespace Input
         private void RichTextAllKeyWords_MouseMove(object sender, MouseEventArgs e)
         {
             if (m_itemPoint.Equals(e.Location))
-                return;
+            return;
             m_itemPoint = e.Location;
             int ind = GetKeyWordIndexByPos(e.Location);
             if (ind >= 0)
@@ -539,7 +542,10 @@ namespace Input
             if (e.Button == MouseButtons.Right)
                 contextMenuStrip1.Show(PointToScreen(e.Location));
             else
+            {
+                RichTextAllKeyWords_MouseMove(sender, e);
                 m_itemMouseDown = GetKeyWordIndexByPos(e.Location);
+            }
         }
         private void ContextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
