@@ -34,6 +34,7 @@ namespace Input
 {
     public partial class Form1 : Form
     {
+        private const string m_title = "Input 1.0";
         private const int WS_EX_NOACTIVATE = 0x08000000;
         private const int WM_KEYDOWN = 0x0100; 
         public Form1()
@@ -46,7 +47,7 @@ namespace Input
             if (!this.TopMost)
             {
                 this.Location = new Point(Properties.Settings.Default.Xlocation, Properties.Settings.Default.Ylocation);
-                richTextAllKeyWords.Activate(this, "Input 1.0");
+                richTextAllKeyWords.Activate(this, m_title);
                 this.KeyPreview = true;
                 this.TopMost = true;
             }

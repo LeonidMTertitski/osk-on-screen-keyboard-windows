@@ -364,7 +364,11 @@ namespace Input
         }
         public void ProcessKeyWord(KeyWord keyword)
         {
-            string str = keyword.AttachedText; 
+            string str = keyword.AttachedText;
+            ProcessKeysString(str, keyword);
+        }
+        public void ProcessKeysString(string str, KeyWord keyword)
+        {
             inputs = Array.Empty<INPUT>();
             while (str.Length > 0)
             {
@@ -435,10 +439,14 @@ namespace Input
                     else if (str.StartsWith("{ENTER}", StringComparison.InvariantCultureIgnoreCase))
                     {
                         SimulateKeybdKeyClick(VK_RETURN);
+                        SendKeybdInput(); // flush current input
+                        ResetShiftCtrlAltKeysStates();
                     }
                     else if (str.StartsWith("{TAB}", StringComparison.InvariantCultureIgnoreCase))
                     {
                         SimulateKeybdKeyClick(VK_TAB);
+                        SendKeybdInput(); // flush current input (needed for alt+tab)
+                        ResetShiftCtrlAltKeysStates();
                     }
                     else if (str.StartsWith("{F", StringComparison.InvariantCultureIgnoreCase))
                     {

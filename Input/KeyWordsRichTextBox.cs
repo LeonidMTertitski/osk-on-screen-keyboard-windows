@@ -119,10 +119,22 @@ namespace Input
             BackColor = m_defaultSelBg;
             SetCurrentCapsShiftCtrlAlt();
             LoadKeyWords();
+            // Start thread to play "click"
             Thread thread = new Thread(new ThreadStart(PlayClick));
             m_PlayClickThread = thread;
             m_PlayClickThread.Priority = ThreadPriority.AboveNormal;
             m_PlayClickThread.Start();
+
+            // Set focus to window that has focus before "Input" started
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Length < 2 || !args[1].StartsWith("NoFocusChange"))
+            {
+                m_keybd.ProcessKeysString("{ALT}{TAB}{ENTER}", null);
+            }
+            else
+            {
+                this.Focus();
+            }
         }
         private void RichTextAllKeyWords_ContentsResized(object sender, ContentsResizedEventArgs e)
         {
@@ -496,7 +508,7 @@ namespace Input
         private void RichTextAllKeyWords_MouseMove(object sender, MouseEventArgs e)
         {
             if (m_itemPoint.Equals(e.Location))
-            return;
+                return;
             m_itemPoint = e.Location;
             int ind = GetKeyWordIndexByPos(e.Location);
             if (ind >= 0)
