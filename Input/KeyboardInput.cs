@@ -25,6 +25,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -359,8 +360,9 @@ namespace Input
                 {
                     MessageBox.Show(String.Format("E3: {0} - {1}.", ex.Source, ex.Message), "KeyboardInput");
                 }
+                Array.Clear(inputs, 0, inputs.Length);
+                inputs = Array.Empty<INPUT>();
             }
-            inputs = Array.Empty<INPUT>();
         }
         public void ProcessKeyWord(KeyWord keyword)
         {
@@ -369,6 +371,7 @@ namespace Input
         }
         public void ProcessKeysString(string str, KeyWord keyword)
         {
+            Array.Clear(inputs, 0, inputs.Length);
             inputs = Array.Empty<INPUT>();
             while (str.Length > 0)
             {

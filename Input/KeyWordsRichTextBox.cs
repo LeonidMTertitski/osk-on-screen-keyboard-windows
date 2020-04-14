@@ -76,7 +76,9 @@ namespace Input
         private const int WM_SETFOCUS = 0x0007;
         private const int WM_KILLFOCUS = 0x0008;
         private const int WM_LBUTTONDBLCLK = 0x0203;
-        
+
+        private const int CHECK_INTERVAL_LONG = 500;
+        private const int CHECK_INTERVAL_SHORT = 50;
         private const int MARGIN_WIDTH = 8;
         public int m_itemHighlightedIndex;
         public Font m_richTextAllKeyWordsFont;
@@ -101,7 +103,7 @@ namespace Input
             m_itemPoint = new Point(-1, -1);
             ResetAll();
             m_aTimer.Tick += new EventHandler(OnTimedEvent);
-            m_aTimer.Interval = 500;
+            m_aTimer.Interval = CHECK_INTERVAL_LONG;
         }
         public void Activate(Form form, string title)
         {
@@ -122,7 +124,8 @@ namespace Input
             // Start thread to play "click"
             Thread thread = new Thread(new ThreadStart(PlayClick));
             m_PlayClickThread = thread;
-            m_PlayClickThread.Priority = ThreadPriority.AboveNormal;
+            //m_PlayClickThread.Priority = ThreadPriority.AboveNormal;
+            m_PlayClickThread.Priority = ThreadPriority.BelowNormal;
             m_PlayClickThread.Start();
 
             // Set focus to window that has focus before "Input" started
@@ -453,6 +456,7 @@ namespace Input
         private void OnTimedEvent(Object myObject, EventArgs myEventArgs)
         {
             m_aTimer.Stop();
+            m_aTimer.Interval = CHECK_INTERVAL_LONG;
             if (m_Form.WindowState != FormWindowState.Minimized)
             {
                 Point xyMouse = System.Windows.Forms.Control.MousePosition;
@@ -460,6 +464,8 @@ namespace Input
                 int maxDistX = 100;
                 int maxDistY = 100;
                 bool mouseButtonsUp = System.Windows.Forms.Control.MouseButtons == MouseButtons.None;
+                if (!mouseButtonsUp)
+                    m_aTimer.Interval = CHECK_INTERVAL_SHORT;
                 if ((xyMouse.X >= xyWindow.X && xyMouse.X <= xyWindow.X + m_Form.Width &&
                      xyMouse.Y >= xyWindow.Y && xyMouse.Y <= xyWindow.Y + m_Form.Height))
                     mouseButtonsUp = true;
