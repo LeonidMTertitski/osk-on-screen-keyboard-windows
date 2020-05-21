@@ -119,7 +119,7 @@ namespace Input
         public bool m_altPressed;
         public bool m_capsPressed;
         public bool m_shiftPressed;
-        public bool CaseChanged = false;
+        public bool CaseChanged = true;
 
         public const ushort VK_KEY_DOWN = (ushort)0x8000;
         public const ushort VK_KEY_TOGLED = (ushort)0x0001;
@@ -448,7 +448,8 @@ namespace Input
                     else if (str.StartsWith("{TAB}", StringComparison.InvariantCultureIgnoreCase))
                     {
                         SimulateKeybdKeyClick(VK_TAB);
-                        SendKeybdInput(); // flush current input (needed for alt+tab)
+                        SendKeybdInput(); // needed for alt+tab in win7
+                        Thread.Sleep(10); // needed for alt+tab in win7
                         ResetShiftCtrlAltKeysStates();
                     }
                     else if (str.StartsWith("{F", StringComparison.InvariantCultureIgnoreCase))
@@ -470,7 +471,7 @@ namespace Input
                     }
                     else if (str.StartsWith("{VK_UP_0X", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (int.TryParse(str.Substring(6, itemLength - 7), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int vk)
+                        if (int.TryParse(str.Substring(9, itemLength - 10), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int vk)
                             && vk >= 1 && vk <= 254)// && vk != 0x07 && vk != 0x16 && vk != 0x1a && (vk < 0x3a || vk > 0x40) && (vk < 0x88 || vk > 0x8f)
                         {
                             SimulateKeybdKeyUp((ushort)(vk));
@@ -478,7 +479,7 @@ namespace Input
                     }
                     else if (str.StartsWith("{VK_DOWN_0X", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (int.TryParse(str.Substring(6, itemLength - 7), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int vk)
+                        if (int.TryParse(str.Substring(9, itemLength - 10), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int vk)
                             && vk >= 1 && vk <= 254)// && vk != 0x07 && vk != 0x16 && vk != 0x1a && (vk < 0x3a || vk > 0x40) && (vk < 0x88 || vk > 0x8f)
                         {
                             SimulateKeybdKeyDown((ushort)(vk));

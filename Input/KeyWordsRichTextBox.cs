@@ -102,8 +102,8 @@ namespace Input
             m_mousePoint = new Point(0, 0);
             m_itemPoint = new Point(-1, -1);
             ResetAll();
-            m_aTimer.Tick += new EventHandler(OnTimedEvent);
             m_aTimer.Interval = CHECK_INTERVAL_LONG;
+            m_aTimer.Tick += new EventHandler(OnTimedEvent);
         }
         public void Activate(Form form, string title)
         {
@@ -119,8 +119,8 @@ namespace Input
             ReadOnly = false; // needed to prevent "beep" sound on "Shift" in win7
             SelectionBackColor = m_defaultSelBg;
             BackColor = m_defaultSelBg;
-            SetCurrentCapsShiftCtrlAlt();
             LoadKeyWords();
+            SetCurrentCapsShiftCtrlAlt();
             // Start thread to play "click"
             Thread thread = new Thread(new ThreadStart(PlayClick));
             m_PlayClickThread = thread;
@@ -132,7 +132,7 @@ namespace Input
             string[] args = Environment.GetCommandLineArgs();
             if (args.Length < 2 || !args[1].StartsWith("NoFocusChange"))
             {
-                m_keybd.ProcessKeysString("{ALT}{TAB}{ENTER}", null);
+                m_keybd.ProcessKeysString("{ALT}{TAB}", null);
             }
             else
             {
@@ -399,7 +399,7 @@ namespace Input
             Text = str;
             KeyWords.UnselectAll(m_itemHighlightedIndex);
             SetFont();
-            HighlightItem(true, m_itemHighlightedIndex);
+            HighlightItem(true);
         }
         private bool SameItem(int ind, int index)
         {
@@ -418,8 +418,9 @@ namespace Input
                    SameItem(KeyWords.capsIndex, ind) ||
                    SameItem(KeyWords.altIndex, ind);
         }
-        private void HighlightItem(bool bHighlight, int ind)
+        private void HighlightItem(bool bHighlight)
         {
+            int ind = m_itemHighlightedIndex;
             if (ind >= 0 && ind < KeyWords.m_KeyWords.Length && KeyWords.m_KeyWords[ind].Highlighted != bHighlight)
             {
                 // highlight key under current mouse cursor position
@@ -517,14 +518,12 @@ namespace Input
                 return;
             m_itemPoint = e.Location;
             int ind = GetKeyWordIndexByPos(e.Location);
-            if (ind >= 0)
+
+            if (m_itemHighlightedIndex != ind || (ind >= 0 && KeyWords.m_KeyWords[ind].Highlighted != true))
             {
-                if (m_itemHighlightedIndex != ind || KeyWords.m_KeyWords[ind].Highlighted != true)
-                {
-                    HighlightItem(false, m_itemHighlightedIndex);
-                    m_itemHighlightedIndex = ind;
-                    HighlightItem(true, ind);
-                }
+                HighlightItem(false);
+                m_itemHighlightedIndex = ind;
+                HighlightItem(true);
             }
         }
         private void RichTextAllKeyWords_MouseClick(object sender, MouseEventArgs e)
@@ -688,6 +687,12 @@ namespace Input
             }
             m_clickSoundPlayer.Dispose();
             m_ClickSoundStream.Close();
+        }
+
+        private void KeyWordsRichTextBox_MouseLeave(object sender, EventArgs e)
+        {
+            MouseEventArgs eMouseLeave = new MouseEventArgs(MouseButtons.Left, 0, -1, -1, 0);
+            RichTextAllKeyWords_MouseMove(sender, eMouseLeave);
         }
     }
 }

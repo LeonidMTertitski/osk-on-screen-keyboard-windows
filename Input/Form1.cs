@@ -40,6 +40,14 @@ namespace Input
         public Form1()
         {
             InitializeComponent();
+
+            if (Properties.Settings.Default.Xlocation == -32000 ||
+                Properties.Settings.Default.Ylocation == -32000)
+            {
+                // rare case
+                Properties.Settings.Default.Xlocation = 0;
+                Properties.Settings.Default.Ylocation = 0;
+            }
             this.Location = new Point(Properties.Settings.Default.Xlocation, Properties.Settings.Default.Ylocation);
         }
         private void Form1_Activated(object sender, EventArgs e)
@@ -54,8 +62,8 @@ namespace Input
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Properties.Settings.Default.Xlocation = this.Location.X;
-            Properties.Settings.Default.Ylocation = this.Location.Y;
+            Properties.Settings.Default.Xlocation = this.RestoreBounds.X;
+            Properties.Settings.Default.Ylocation = this.RestoreBounds.Y;
             richTextAllKeyWords.Close();
         }
         private void Form1_Paint(object sender, PaintEventArgs e)

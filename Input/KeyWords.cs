@@ -115,6 +115,8 @@ namespace Input
         }
         public int GetKeyWordIndexByPos(int ipos)
         {
+            if (ipos == 0)
+                return -1;
             for (int i = 0; i < m_KeyWords.Length; i++)
             {
                 if (m_KeyWords[i].Start <= ipos && m_KeyWords[i].Start + m_KeyWords[i].Length > ipos)

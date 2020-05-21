@@ -30,7 +30,7 @@ namespace Input
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.components = new System.ComponentModel.Container();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.followCursorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoFadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,13 +51,13 @@ namespace Input
             this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.contextMenuStrip1.ShowCheckMargin = true;
             this.contextMenuStrip1.ShowImageMargin = false;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(190, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(451, 236);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
             // 
             // followCursorToolStripMenuItem
             // 
             this.followCursorToolStripMenuItem.Name = "followCursorToolStripMenuItem";
-            this.followCursorToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.followCursorToolStripMenuItem.Size = new System.Drawing.Size(450, 58);
             this.followCursorToolStripMenuItem.Text = "Auto move window";
             this.followCursorToolStripMenuItem.Click += new System.EventHandler(this.FollowCursorToolStripMenuItem_Click);
             // 
@@ -67,24 +67,24 @@ namespace Input
             this.autoFadeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.autoFadeToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.autoFadeToolStripMenuItem.Name = "autoFadeToolStripMenuItem";
-            this.autoFadeToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.autoFadeToolStripMenuItem.Size = new System.Drawing.Size(450, 58);
             this.autoFadeToolStripMenuItem.Text = "Auto fade";
             this.autoFadeToolStripMenuItem.Click += new System.EventHandler(this.AutoFadeToolStripMenuItem_Click);
             // 
             // playSoundOnClickToolStripMenuItem
             // 
             this.playSoundOnClickToolStripMenuItem.Name = "playSoundOnClickToolStripMenuItem";
-            this.playSoundOnClickToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.playSoundOnClickToolStripMenuItem.Size = new System.Drawing.Size(450, 58);
             this.playSoundOnClickToolStripMenuItem.Text = "Play sound on click";
             this.playSoundOnClickToolStripMenuItem.Click += new System.EventHandler(this.PlaySoundOnClickToolStripMenuItem_Click);
             // 
             // inputToolStripMenuItem
             // 
             this.inputToolStripMenuItem.Name = "inputToolStripMenuItem";
-            this.inputToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.inputToolStripMenuItem.Size = new System.Drawing.Size(450, 58);
             this.inputToolStripMenuItem.Text = "Select Keywords Table";
             // 
-            // richTextAllKeyWords
+            // KeyWordsRichTextBox
             // 
             this.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.CausesValidation = false;
@@ -95,15 +95,15 @@ namespace Input
             this.ReadOnly = true;
             this.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
             this.Size = new System.Drawing.Size(430, 298);
-            this.TabIndex = 0;
             this.TabStop = false;
-            this.Text = "";
             this.WordWrap = false;
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.RichTextAllKeyWords_MouseClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextAllKeyWords_MouseDown);
+            this.MouseLeave += new System.EventHandler(this.KeyWordsRichTextBox_MouseLeave);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextAllKeyWords_MouseMove);
-
             this.contextMenuStrip1.ResumeLayout(false);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
