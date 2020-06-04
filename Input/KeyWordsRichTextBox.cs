@@ -80,6 +80,7 @@ namespace Input
         private const int CHECK_INTERVAL_LONG = 500;
         private const int CHECK_INTERVAL_SHORT = 50;
         private const int MARGIN_WIDTH = 8;
+        private bool START_NEW_INPUT = false;
         public int m_itemHighlightedIndex;
         public Font m_richTextAllKeyWordsFont;
         public KeyWordsRichTextBox()
@@ -113,8 +114,16 @@ namespace Input
             m_moveOnMouseButtonDown = Properties.Settings.Default.MoveWindow;
             m_fade = Properties.Settings.Default.FadeWindow;
             m_playClickSound = Properties.Settings.Default.PlaySoundOnClick;
-            m_selectedKeyWordsName = Properties.Settings.Default.KeyWordsName;
+           
+            string[] args = Environment.GetCommandLineArgs();
+
+            if (args.Length > 2 && args[2].Length > 0)
+                m_selectedKeyWordsName = args[2]; // can happen if START_NEW_INPUT is true, or you use command line
+            else
+                m_selectedKeyWordsName = Properties.Settings.Default.KeyWordsName;
+            
             m_selectedKeyWordsName = GenerateMenuAndGetKeyWordsName(m_selectedKeyWordsName);
+
             m_defaultSelBg = SelectionBackColor;
             ReadOnly = false; // needed to prevent "beep" sound on "Shift" in win7
             SelectionBackColor = m_defaultSelBg;
@@ -129,7 +138,6 @@ namespace Input
             m_PlayClickThread.Start();
 
             // Set focus to window that has focus before "Input" started
-            string[] args = Environment.GetCommandLineArgs();
             if (args.Length < 2 || !args[1].StartsWith("NoFocusChange"))
             {
                 m_keybd.ProcessKeysString("{ALT}{TAB}", null);
@@ -604,8 +612,15 @@ namespace Input
         private void InputToolStripMenuItem_InputItem_Click(object sender, EventArgs e)
         {
             MySetForegroundWindow();
-            m_selectedKeyWordsName = sender.ToString();
-            LoadKeyWords();
+            if (START_NEW_INPUT)
+            {
+                Process.Start("input.exe", "NoFocusChange " + sender.ToString());
+            }
+            else
+            {
+                m_selectedKeyWordsName = sender.ToString();
+                LoadKeyWords();
+            }
         }
         private void MyHideCaret()
         {
