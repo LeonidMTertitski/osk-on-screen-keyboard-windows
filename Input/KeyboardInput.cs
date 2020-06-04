@@ -274,7 +274,14 @@ namespace Input
                 if (firstChar >= 0xbb && firstChar <= 0xbe)
                     SimulateKeybdKeyClick((ushort)(firstChar - 0x90), false); // +,-.
                 else if (Char.IsDigit(firstChar))
-                    SimulateKeybdKeyClick(firstChar, false); // needed for some web sites for input field with check "is it digit"
+                {
+                    if (m_shiftPressed)
+                    {
+                        // turn "shift" off
+                        SimulateKeybdKeyUp(VK_SHIFT);
+                    }
+                    SimulateKeybdKeyClick(firstChar, false); // "not unicode" for some web sites for input field with check "is it digit"
+                }
                 else
                     SimulateKeybdKeyClick(firstChar, true);
                 str = str.Substring(1, str.Length - 1);
