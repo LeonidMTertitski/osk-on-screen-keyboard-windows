@@ -40,9 +40,10 @@ namespace Input
         public Form1()
         {
             InitializeComponent();
-
             if (Properties.Settings.Default.Xlocation == -32000 ||
-                Properties.Settings.Default.Ylocation == -32000)
+                Properties.Settings.Default.Ylocation == -32000 ||
+                Properties.Settings.Default.Xlocation > Screen.FromControl(this).Bounds.Width - 40 ||
+                Properties.Settings.Default.Ylocation > Screen.FromControl(this).Bounds.Height - 40)
             {
                 // rare case
                 Properties.Settings.Default.Xlocation = 0;

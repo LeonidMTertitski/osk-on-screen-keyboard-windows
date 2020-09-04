@@ -541,7 +541,7 @@ namespace Input
             }
             SendKeybdInput();
         }
-        public void GetCapsShiftCtrlAltState()
+        public bool GetCapsShiftCtrlAltState()
         {
             bool shiftPressedOld = m_shiftPressed;
             bool capsPressedOld = m_capsPressed;
@@ -551,6 +551,7 @@ namespace Input
             m_capsPressed = (GetKeyState(VK_CAPITAL) & VK_KEY_TOGLED) != 0;
             if (shiftPressedOld != m_shiftPressed || capsPressedOld != m_capsPressed)
                 CaseChanged = true;// Shift down or Caps ON presed on a different keyboard
+            return CaseChanged;
         }
         public void ResetAll()
         {

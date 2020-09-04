@@ -179,7 +179,7 @@ namespace Input
                 m_Form.Invalidate();
             }
         }
-        private void SetCase()
+        private bool SetCase()
         {
             if (m_keybd.CaseChanged)
             {
@@ -188,8 +188,10 @@ namespace Input
                 if (KeyWords.SetCase(bToUpper))
                 {
                     SetText(KeyWords.m_AllItems);
+                    return true;
                 }
             }
+            return false;
         }
         private void SetFont(Font fontToUse, int istartInd, int istopInd)
         {
@@ -230,22 +232,24 @@ namespace Input
 
             Select(0, 0);
         }
-        private void SelectCapsShiftCtrlAlt()
+        private bool SelectCapsShiftCtrlAlt()
         {
-            SelectItem(m_keybd.m_ctrlPressed, KeyWords.ctrlIndex);
-            SelectItem(m_keybd.m_shiftPressed, KeyWords.shiftIndex);
-            SelectItem(m_keybd.m_capsPressed, KeyWords.capsIndex);
-            SelectItem(m_keybd.m_altPressed, KeyWords.altIndex);
-            SelectItem(true, KeyWords.selectedIndex);
+            bool bRedraw = false;
+            bRedraw |= SelectItem(m_keybd.m_ctrlPressed, KeyWords.ctrlIndex);
+            bRedraw |= SelectItem(m_keybd.m_shiftPressed, KeyWords.shiftIndex);
+            bRedraw |= SelectItem(m_keybd.m_capsPressed, KeyWords.capsIndex);
+            bRedraw |= SelectItem(m_keybd.m_altPressed, KeyWords.altIndex);
+            bRedraw |= SelectItem(true, KeyWords.selectedIndex);
+            return bRedraw;
         }
-        private void SetCurrentCapsShiftCtrlAlt()
+        private void SetCurrentCapsShiftCtrlAlt(bool bRedraw = true)
         {
             SuspendDrawing(); // to prevent flickering
             m_keybd.GetCapsShiftCtrlAltState(); // keys states can be changed by a different keyboard
-            SetCase(); // show letters with correct case
-            SelectCapsShiftCtrlAlt(); // select "pressed" keys
+            bRedraw |= SetCase(); // show letters with correct case
+            bRedraw |= SelectCapsShiftCtrlAlt(); // select "pressed" keys
             ResizeForm(); // resize window if needed
-            ResumeDrawing(); // resume drawing
+            ResumeDrawing(bRedraw); // resume drawing
         }
         private void ProcessCommand(string cmd)
         {
@@ -400,6 +404,7 @@ namespace Input
                 return;
             }
             SetText(KeyWords.m_AllItems);
+            SetCurrentCapsShiftCtrlAlt();
             m_aTimer.Start();
         }
         private void SetText(string str)
@@ -450,8 +455,9 @@ namespace Input
                     KeyWords.m_KeyWords[ind].Selected = false;
             }
         }
-        private void SelectItem(bool bSelect, int ind)
+        private bool SelectItem(bool bSelect, int ind)
         {
+            bool bRet = false;
             Color bkColor = (ind == KeyWords.selectedIndex) ? Color.White : Color.Yellow;
             while (ind >= 0 && ind < KeyWords.m_KeyWords.Length && KeyWords.m_KeyWords[ind].Selected != bSelect)
             {
@@ -460,7 +466,9 @@ namespace Input
                 Select(0, 0);
                 KeyWords.m_KeyWords[ind].Selected = bSelect;
                 ind = KeyWords.m_KeyWords[ind].IndexSameItem;
+                bRet = true;
             }
+            return bRet;
         }
         private void OnTimedEvent(Object myObject, EventArgs myEventArgs)
         {
@@ -510,7 +518,7 @@ namespace Input
                     m_Form.Opacity = 0.5;
                 }
                 m_mousePoint = xyMouse;
-                SetCurrentCapsShiftCtrlAlt();
+                SetCurrentCapsShiftCtrlAlt(false);
             }
             m_aTimer.Start();
             return;
@@ -560,6 +568,7 @@ namespace Input
             KeyWords.altIndex = -1;
             KeyWords.selectedIndex = -1;
             m_itemMouseDown = -1;
+            m_keybd.ResetAll();
         }
         private void RichTextAllKeyWords_MouseDown(object sender, MouseEventArgs e)
         {
@@ -630,10 +639,11 @@ namespace Input
         {
             SendMessage(this.Handle, WM_SETREDRAW, (IntPtr)0, IntPtr.Zero);
         }
-        private void ResumeDrawing()
+        private void ResumeDrawing(bool bRedraw)
         {
             SendMessage(this.Handle, WM_SETREDRAW, (IntPtr)1, IntPtr.Zero);
-            this.Invalidate();
+            if (bRedraw)
+                this.Invalidate();
         }
         protected override void WndProc(ref Message m)
         {
